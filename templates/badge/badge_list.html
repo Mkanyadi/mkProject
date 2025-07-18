@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Lista Badge-uri</h2>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for badge in object_list %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        {% if badge.image %}
+                            <img src="{{ badge.image.url }}" class="card-img-top" alt="{{ badge.name }}">
+                        {% endif %}
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ badge.name }}</h5>
+                            <p class="card-text">{{ badge.description }}</p>
+                            <a href="{% url 'badge-detail' badge.pk %}"
+                               class="btn btn-outline-primary btn-sm">Detalii</a>
+                            <a href="{% url 'badge-edit' badge.pk %}" class="btn btn-warning btn-sm">Editează</a>
+                            <a href="{% url 'badge-delete' badge.pk %}" class="btn btn-danger btn-sm">Șterge</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center">Nu există badge-uri momentan.</p>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'badge-add' %}" class="btn btn-success">Adaugă un nou badge</a>
+        </div>
+    </div>
+{% endblock %}

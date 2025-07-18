@@ -15,15 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-]
-from django.contrib import admin
 from django.urls import path, include
+from objective.views import register, home  # ← ai deja
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('objectives.urls')),  # ← acesta preia pagina principală
+    path('', home, name='home'),
+    path('objectives/', include('objective.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('register/', register, name='register'),
+    path('badges/', include('badge.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

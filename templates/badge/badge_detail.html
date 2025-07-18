@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <div class="card shadow-lg">
+                    {% if badge.icon %}
+                        <img src="{{ badge.icon.url }}" class="card-img-top p-4" alt="{{ badge.name }}">
+                    {% endif %}
+
+                    <div class="card-body text-center">
+                        <h3 class="card-title">{{ badge.name }}</h3>
+                        <p class="card-text text-muted">{{ badge.description }}</p>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <a href="{% url 'badge-update' badge.pk %}" class="btn btn-warning me-2">Editează</a>
+                        <a href="{% url 'badge-delete' badge.pk %}" class="btn btn-danger">Șterge</a>
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="{% url 'badge-list' %}" class="btn btn-outline-secondary">Înapoi la listă</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
