@@ -1,0 +1,14 @@
+<div class="card mb-3 shadow-sm">
+    {% if obiectiv.image %}
+        <img src="{{ obiectiv.image.url }}" class="card-img-top" alt="{{ obiectiv.title }}">
+    {% endif %}
+    <div class="card-body">
+        <h5 class="card-title">{{ obiectiv.title }}</h5>
+        <p class="card-text">{{ obiectiv.description }}</p>
+        {% if obiectiv.completed %}
+            <span class="badge bg-success">Finalizat</span>
+        {% else %}
+            <a href="{% url 'mark_completed' obiectiv.id %}" class="btn btn-danger">Marchează completat</a>
+        {% endif %}
+    </div>
+</div>
