@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🌍 Bucket List</h2>
+
+    <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Nr.</th>
+                <th>Obiectiv</th>
+                <th class="text-center">Acțiune</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>N01</td>
+                <td>Santorini (Grecia) – Cină romantică pe o terasă cu vedere la mare.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Santorini (Grecia)">
+                        <input type="hidden" name="description" value="Cină romantică pe o terasă cu vedere la mare.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>N02</td>
+                <td>Japonia (Tokyo/Kyoto) – Privește cireșii în floare primăvara.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Japonia (Tokyo/Kyoto)">
+                        <input type="hidden" name="description" value="Privește cireșii în floare primăvara.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>N03</td>
+                <td>Route 66 – Aventură auto clasică prin SUA.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Route 66 (SUA)">
+                        <input type="hidden" name="description" value="Aventură auto clasică de-a lungul Route 66 în SUA.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+

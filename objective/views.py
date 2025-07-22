@@ -2,13 +2,34 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 from .forms import UserRegisterForm
 from .models import Objective
 from badge.models import Badge
 
+from django.views.generic import TemplateView
 
+from django.views import View
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from .models import Objective
+
+class AddObjectiveFromBucketView(LoginRequiredMixin, View):
+    def post(self, request):
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        if title and description:
+            Objective.objects.create(
+                user=request.user,
+                title=title,
+                description=description,
+            )
+        return HttpResponseRedirect(reverse('bucket-list'))
+
+class BucketListView(TemplateView):
+    template_name = 'objectives/bucket_list.html'
 
 
 

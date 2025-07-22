@@ -10,6 +10,7 @@ class Objective(models.Model):
     completed = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='objectives')
     image = models.ImageField(upload_to='objectives/', blank=True, null=True)
+    date_added = models.DateTimeField(auto_now_add=True)  # ← AICI
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
