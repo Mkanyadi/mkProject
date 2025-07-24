@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger shadow">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">TripMania</a>
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}">🌍 TripMania</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
@@ -8,43 +8,52 @@
 
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Acasă</a>
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">🏠 Acasă</a>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="categorieDropdown" role="button"
-                       data-bs-toggle="dropdown">
-                        Categorii
+                    <a class="nav-link dropdown-toggle" href="#" id="categorieDropdown" role="button" data-bs-toggle="dropdown">
+                        🧭 Categorii
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Călătorii</a></li>
-                        <li><a class="dropdown-item" href="#">Aventură</a></li>
-                        <li><a class="dropdown-item" href="#">Hobby-uri</a></li>
-                        <li><a class="dropdown-item" href="#">Obiective personale</a></li>
+                        <li><a class="dropdown-item" href="#">🌴 Călătorii</a></li>
+                        <li><a class="dropdown-item" href="#">⛰️ Aventură</a></li>
+                        <li><a class="dropdown-item" href="#">🎨 Hobby-uri</a></li>
+                        <li><a class="dropdown-item" href="#">🏆 Obiective personale</a></li>
                     </ul>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'objective-list' %}">Obiective</a>
+                    <a class="nav-link" href="{% url 'objective-list' %}">🎯 Obiective</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'objective-add' %}">Adaugă obiectiv</a>
+                    <a class="nav-link" href="{% url 'bucket-list' %}">🌐 Bucket List</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'badge-list' %}">🏅 Badge-uri</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'objective-add' %}">➕ Adaugă obiectiv</a>
+                </li>
+
             </ul>
 
             {% if user.is_authenticated %}
                 <span class="navbar-text text-white me-3">
-                    Salut, {{ user.username }}!
+                    👋 Salut, {{ user.username }}!
                 </span>
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-light me-2">Logout</button>
+                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
                 </form>
             {% else %}
-                <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Autentificare</a>
-                <a href="{% url 'register' %}" class="btn btn-warning">Înregistrare</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm me-2">Autentificare</a>
+                <a href="{% url 'register' %}" class="btn btn-warning btn-sm">Înregistrare</a>
             {% endif %}
         </div>
     </div>

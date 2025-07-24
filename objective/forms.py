@@ -14,3 +14,10 @@ class UserRegisterForm(UserCreationForm):
             'password1': 'Parolă',
             'password2': 'Confirmă parolă',
         }
+
+    def __init__(self, *args, **kwargs):
+            super(UserRegisterForm, self).__init__(*args, **kwargs)
+            self.fields['username'].widget.attrs['placeholder'] = 'Nume utilizator'
+            self.fields['email'].widget.attrs['placeholder'] = 'exemplu@email.com'
+            self.fields['password1'].widget.attrs['placeholder'] = 'Introduceți o parolă sigură'
+            self.fields['password2'].widget.attrs['placeholder'] = 'Reintroduceți parola'

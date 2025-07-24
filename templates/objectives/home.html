@@ -37,7 +37,10 @@
                     <h5 class="card-title">👤 Profil</h5>
                     <p class="card-text">Gestionează-ți contul, autentifică-te și păstrează-ți progresul.</p>
                     {% if user.is_authenticated %}
-                        <a href="{% url 'logout' %}" class="btn btn-outline-secondary">Logout</a>
+                          <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger">Logout, {{ user.username }}</button>
+                    </form>
                     {% else %}
                         <a href="{% url 'login' %}" class="btn btn-outline-primary">Autentificare</a>
                     {% endif %}

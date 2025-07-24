@@ -1,41 +1,39 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.views import View
+from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 from .forms import UserRegisterForm
 from .models import Objective
 from badge.models import Badge
 
-from django.views.generic import TemplateView
 
-from django.views import View
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from .models import Objective
-
-class AddObjectiveFromBucketView(LoginRequiredMixin, View):
-    def post(self, request):
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        if title and description:
-            Objective.objects.create(
-                user=request.user,
-                title=title,
-                description=description,
-            )
-        return HttpResponseRedirect(reverse('bucket-list'))
-
-class BucketListView(TemplateView):
-    template_name = 'objectives/bucket_list.html'
-
+BUCKET_OBJECTIVES = [
+    {
+        "title": "Santorini (Grecia)",
+        "description": "Cină romantică pe o terasă cu vedere la mare."
+    },
+    {
+        "title": "Japonia (Tokyo/Kyoto)",
+        "description": "Privește cireșii în floare primăvara."
+    },
+    {
+        "title": "Route 66 (SUA)",
+        "description": "Aventură auto clasică de-a lungul Route 66 în SUA."
+    },
+]
 
 
 def home(request):
     badges = Badge.objects.all()
     return render(request, 'objectives/home.html', {'badges': badges})
+
+
 
 def register(request):
     if request.method == 'POST':
@@ -49,12 +47,32 @@ def register(request):
 
 
 
+class BucketListView(TemplateView):
+    template_name = 'objectives/bucket_list.html'
+
+class AddObjectiveFromBucketView(LoginRequiredMixin, View):
+    def post(self, request):
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        if title and description:
+            Objective.objects.create(
+                user=request.user,
+                title=title,
+                description=description,
+            )
+        return HttpResponseRedirect(reverse('bucket-list'))
+
+
+# CRUD OBIECTIVE
 class ObjectiveListView(LoginRequiredMixin, ListView):
     model = Objective
     template_name = 'objectives/objective_list.html'
 
     def get_queryset(self):
-        return Objective.objects.filter(user=self.request.user)
+        queryset = Objective.objects.filter(user=self.request.user)
+        if self.request.GET.get("completed") == "true":
+            queryset = queryset.filter(completed=True)
+        return queryset
 
 
 class ObjectiveDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -96,3 +114,13 @@ class ObjectiveDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         obj = self.get_object()
         return obj.user == self.request.user
+
+
+
+@login_required
+def toggle_completed(request, pk):
+    objective = get_object_or_404(Objective, pk=pk, user=request.user)
+    if request.method == 'POST':
+        objective.completed = not objective.completed
+        objective.save()
+    return redirect('objective-list')

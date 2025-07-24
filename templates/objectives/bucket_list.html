@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center mb-4">🌍 Bucket List</h2>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">🌍 Bucket List</h2>
 
-    <table class="table table-bordered table-striped table-hover align-middle">
-        <thead class="table-dark">
+        <table class="table table-bordered table-striped table-hover align-middle">
+            <thead class="table-dark">
             <tr>
                 <th>Nr.</th>
                 <th>Obiectiv</th>
                 <th class="text-center">Acțiune</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
 
             <tr>
                 <td>N01</td>
@@ -49,16 +49,174 @@
                     <form method="post" action="{% url 'add-from-bucket' %}">
                         {% csrf_token %}
                         <input type="hidden" name="title" value="Route 66 (SUA)">
-                        <input type="hidden" name="description" value="Aventură auto clasică de-a lungul Route 66 în SUA.">
+                        <input type="hidden" name="description"
+                               value="Aventură auto clasică de-a lungul Route 66 în SUA.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>N04</td>
+                <td>Luminile Nordului (Norvegia, Islanda, Finlanda) – O noapte magică sub aurorele boreale.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Luminile Nordului (Norvegia, Islanda, Finlanda)">
+                        <input type="hidden" name="description" value="O noapte magică sub aurorele boreale.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N05</td>
+                <td>Descoperă Machu Picchu (Peru) – O călătorie spre ruinele legendare ale incașilor.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Machu Picchu (Peru)">
+                        <input type="hidden" name="description"
+                               value="O călătorie spre ruinele legendare ale incașilor.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N06</td>
+                <td>Safari în Africa (Kenya, Tanzania) – Leii, elefanții și peisaje spectaculoase.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Safari în Africa (Kenya, Tanzania)">
+                        <input type="hidden" name="description" value="Leii, elefanții și peisaje spectaculoase.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N07</td>
+                <td>Descoperă Tenerife – Insula spaniolă plină de peisaje și minuni naturale.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Tenerife (Spania)">
+                        <input type="hidden" name="description"
+                               value="Insula spaniolă plină de peisaje și minuni naturale.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N08</td>
+                <td>Locuință mobilă prin Europa – Călătorește cu o rulotă și descoperă lumea.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Tur cu rulotă">
+                        <input type="hidden" name="description" value="Călătorește cu o rulotă și descoperă lumea.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N09</td>
+                <td>Explorarea Marii Bariere de Corali (Australia) – Un vis pentru orice scafandru.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Marea Barieră de Corali (Australia)">
+                        <input type="hidden" name="description" value="Un vis pentru orice scafandru.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N10</td>
+                <td>Crăciun în New York – Bradul de la Rockefeller și luminile din Times Square.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Crăciun în New York">
+                        <input type="hidden" name="description"
+                               value="Bradul de la Rockefeller și luminile din Times Square.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N11</td>
+                <td>Zbor cu balonul în Cappadocia (Turcia) – Peisaje magice la răsărit.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Balon Cappadocia (Turcia)">
+                        <input type="hidden" name="description" value="Peisaje magice la răsărit.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N12</td>
+                <td>Înot cu delfinii într-o lagună naturală – O experiență acvatică de vis.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Înot cu delfinii">
+                        <input type="hidden" name="description" value="O experiență acvatică de vis.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N13</td>
+                <td>Maraton cu un prieten – Aleargă pentru sănătate și motivație împreună.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Maraton cu un prieten">
+                        <input type="hidden" name="description" value="Aleargă pentru sănătate și motivație împreună.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N14</td>
+                <td>Zbor cu balonul peste castelele de pe Valea Loarei (Franța) – O aventură romantică printre nori.
+                </td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Valea Loarei (Franța)">
+                        <input type="hidden" name="description" value="O aventură romantică printre nori.">
+                        <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
+                    </form>
+                </td>
+            </tr>
+
+            <tr>
+                <td>N15</td>
+                <td>Noapte arctică în Laponia (Finlanda) – Privește stelele sub cerul polar.</td>
+                <td class="text-center">
+                    <form method="post" action="{% url 'add-from-bucket' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="Laponia (Finlanda)">
+                        <input type="hidden" name="description" value="Privește stelele sub cerul polar.">
                         <button class="btn btn-success btn-sm" type="submit">Adaugă</button>
                     </form>
                 </td>
             </tr>
 
 
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
-
-

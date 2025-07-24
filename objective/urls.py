@@ -1,14 +1,16 @@
+from . import views
 from django.urls import path
-from .views import BucketListView
 from .views import (
     home,
+    BucketListView,
     ObjectiveListView,
     ObjectiveDetailView,
     ObjectiveCreateView,
     ObjectiveUpdateView,
     ObjectiveDeleteView,
+    AddObjectiveFromBucketView,
+    toggle_completed
 )
-from .views import AddObjectiveFromBucketView
 
 urlpatterns = [
     path('', home, name='home'),
@@ -19,4 +21,6 @@ urlpatterns = [
     path('<int:pk>/delete/', ObjectiveDeleteView.as_view(), name='objective-delete'),
     path('bucket-list/', BucketListView.as_view(), name='bucket-list'),
     path('bucket-list/add/', AddObjectiveFromBucketView.as_view(), name='add-from-bucket'),
+    path('toggle-completed/<int:pk>/', toggle_completed, name='toggle-completed'),
 ]
+

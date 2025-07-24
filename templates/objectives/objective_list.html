@@ -1,10 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+    <style>
+        .completed-icon {
+            animation: pop 0.3s ease-out;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">🎯 Obiectivele tale</h2>
+
+        <div class="text-end mb-3">
+            <a href="?completed=true" class="btn btn-outline-success btn-sm">Afișează doar completate</a>
+            <a href="?" class="btn btn-outline-secondary btn-sm">Toate obiectivele</a>
+        </div>
+
+        {% if object_list %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for objective in object_list %}
+                    {% if not request.GET.completed or objective.completed %}
+                        <div class="col">
+                            <div class="card h-100 shadow-sm {% if objective.completed %}border-success{% endif %}">
+                                {% if objective.image %}
+                                    <img src="{{ objective.image.url }}" class="card-img-top"
+                                         alt="{{ objective.title }}">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title d-flex justify-content-between align-items-center">
+                                        {{ objective.title }}
+                                        {% if objective.completed %}
+                                            <i class="bi bi-check-circle-fill text-success completed-icon"
+                                               title="Completat"></i>
+                                        {% endif %}
+                                    </h5>
+                                    <p class="card-text">{{ objective.description|truncatewords:20 }}</p>
+                                    {% if objective.completed %}
+                                        <span class="badge bg-success">✔ Completat</span>
+                                    {% endif %}
+                                </div>
+                                <div class="card-footer d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'objective-detail' objective.pk %}" class="btn btn-sm btn-primary">Detalii</a>
+                                    <a href="{% url 'objective-edit' objective.pk %}" class="btn btn-sm btn-warning">Editează</a>
+                                    <a href="{% url 'objective-delete' objective.pk %}" class="btn btn-sm btn-danger">Șterge</a>
+                                </div>
+                                <div class="card-footer">
+                                    <form method="post" action="{% url 'toggle-completed' objective.pk %}"
+                                          class="d-flex align-items-center justify-content-between">
+                                        {% csrf_token %}
+                                        <label class="form-check-label">
+                                            <input type="checkbox" name="completed" onchange="this.form.submit();"
+                                                   class="form-check-input me-2"
+                                                   {% if objective.completed %}checked{% endif %}>
+                                            Marcat ca realizat
+                                        </label>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">Nu ai niciun obiectiv încă. <a href="{% url 'objective-add' %}">Adaugă unul acum!</a>
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}
+
