@@ -3,7 +3,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from objectives.models import Objective
+from objective.models import Objective
 
 
 class Command(BaseCommand):
@@ -25,14 +25,11 @@ class Command(BaseCommand):
                     message=(
                         f'Salut, {user.username}!\n\n'
                         'Se pare că nu ai completat niciun obiectiv în ultima lună. '
-                        'E momentul perfect să-ți amintești de lista ta și să faci un pas mic spre visul tău!\n\n'
-                        'Intră acum și adaugă sau bifează un obiectiv pe TripMania! 🚀'
+                        'E momentul perfect să revii pe TripMania și să faci un pas spre visul tău! 🚀'
                     ),
                     from_email='no-reply@tripmania.ro',
                     recipient_list=[user.email],
                     fail_silently=False,
                 )
-                self.stdout.write(f"Email trimis către: {user.email}")
+                self.stdout.write(self.style.SUCCESS(f"Email trimis către: {user.email}"))
 
-else:
-self.stdout.write(f"ℹ️ {user.email} are obiective recente.")
