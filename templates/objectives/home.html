@@ -2,88 +2,102 @@
 {% load static %}
 
 {% block content %}
-<div class="text-center mb-4">
-    <img src="{% static 'images/tripmania_pic.jpg' %}" class="img-fluid rounded shadow" alt="TripMania Banner">
-</div>
+    <div class="text-center mb-4">
+        <img src="{% static 'images/tripmania_pic.jpg' %}" class="img-fluid rounded shadow" alt="TripMania Banner">
+    </div>
 
-<div class="container mb-5">
-    <h2 class="text-center mb-4">🏅 Badge-uri obținute:</h2>
-
-    {% if badges %}
-        <div class="row justify-content-center">
-            {% for badge in badges %}
-                <div class="col-md-4 mb-3">
-                    <div class="card border-success shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <h5 class="card-title text-success">{{ badge.name }}</h5>
-                            <p class="card-text">{{ badge.description }}</p>
+    <div class="container mb-5">
+        <h2 class="text-center mb-4">🏅 Badge-uri obținute:</h2>
+        {% if badges %}
+            <div class="row justify-content-center">
+                {% for badge in badges %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-warning shadow-lg badge-highlight">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-warning fw-bold">
+                                    ⭐ {{ badge.name }}
+                                </h5>
+                                <p class="card-text">{{ badge.description }}</p>
+                            </div>
                         </div>
                     </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-warning text-center" role="alert">
+                Nu ai încă niciun badge. Începe să finalizezi obiective pentru a obține primele tale insigne! 🏁
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="alert alert-info text-center mt-4" role="alert">
+        ✅ Ai finalizat <strong>{{ obiective_finalizate_recent }}</strong> obiectiv(e) în ultima lună!
+    </div>
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Bine ai venit pe TripMania!</h1>
+        <p class="lead">Creează, explorează și îndeplinește-ți obiectivele de viață!</p>
+        <a href="{% url 'objective-add' %}" class="btn btn-danger btn-lg">➕ Adaugă un obiectiv</a>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🎯 Obiective</h5>
+                    <p class="card-text">Gestionează lista ta de dorințe și urmărește-ți progresul.</p>
+                    <a href="{% url 'objective-list' %}" class="btn btn-outline-danger">Vezi toate</a>
                 </div>
-            {% endfor %}
+            </div>
         </div>
-    {% else %}
-        <div class="alert alert-warning text-center" role="alert">
-            Nu ai încă niciun badge. Începe să finalizezi obiective pentru a obține primele tale insigne! 🏁
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🏅 Badge-uri</h5>
+                    <p class="card-text">Obține insigne pentru obiectivele atinse și fii motivat!</p>
+                    <a href="{% url 'badge-list' %}" class="btn btn-outline-warning">Vezi badge-uri</a>
+                </div>
+            </div>
         </div>
-    {% endif %}
-</div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h5 class="card-title">👤 Profil</h5>
+                    <p class="card-text">Gestionează-ți contul, autentifică-te și păstrează-ți progresul.</p>
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger">Logout, {{ user.username }}</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">Autentificare</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="text-center mb-5">
-    <h1 class="display-5 fw-bold">Bine ai venit pe TripMania!</h1>
-    <p class="lead">Creează, explorează și îndeplinește-ți obiectivele de viață!</p>
-    <a href="{% url 'objective-add' %}" class="btn btn-danger btn-lg">➕ Adaugă un obiectiv</a>
-</div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">🗺️ Bucket List</h5>
+                    <p class="card-text">
+                        Inspiră-te din obiective memorabile din întreaga lume și adaugă-le rapid în lista ta.
+                    </p>
+                    <a href="{% url 'bucket-list' %}" class="btn btn-outline-primary">Vezi lista completă</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="row text-center">
-    <div class="col-md-4 mb-4">
-        <div class="card shadow h-100">
-            <div class="card-body">
-                <h5 class="card-title">🎯 Obiective</h5>
-                <p class="card-text">Gestionează lista ta de dorințe și urmărește-ți progresul.</p>
-                <a href="{% url 'objective-list' %}" class="btn btn-outline-danger">Vezi toate</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-4">
-        <div class="card shadow h-100">
-            <div class="card-body">
-                <h5 class="card-title">🏅 Badge-uri</h5>
-                <p class="card-text">Obține insigne pentru obiectivele atinse și fii motivat!</p>
-                <a href="{% url 'badge-list' %}" class="btn btn-outline-warning">Vezi badge-uri</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-4">
-        <div class="card shadow h-100">
-            <div class="card-body">
-                <h5 class="card-title">👤 Profil</h5>
-                <p class="card-text">Gestionează-ți contul, autentifică-te și păstrează-ți progresul.</p>
-                {% if user.is_authenticated %}
-                    <form method="post" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-danger">Logout, {{ user.username }}</button>
-                    </form>
-                {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline-primary">Autentificare</a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row justify-content-center mt-4">
-    <div class="col-md-4">
-        <div class="card text-center shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">🗺️ Bucket List</h5>
-                <p class="card-text">
-                    Inspiră-te din obiective memorabile din întreaga lume și adaugă-le rapid în lista ta.
-                </p>
-                <a href="{% url 'bucket-list' %}" class="btn btn-outline-primary">Vezi lista completă</a>
-            </div>
-        </div>
-    </div>
-</div>
+    <style>
+        .badge-highlight:hover {
+            transform: scale(1.03);
+            transition: 0.3s ease;
+            box-shadow: 0 0 15px gold;
+        }
+    </style>
 {% endblock %}
+
 

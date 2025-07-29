@@ -14,18 +14,9 @@ from badge.models import Badge
 from django.contrib import messages
 
 BUCKET_OBJECTIVES = [
-    {
-        "title": "Santorini (Grecia)",
-        "description": "Cină romantică pe o terasă cu vedere la mare."
-    },
-    {
-        "title": "Japonia (Tokyo/Kyoto)",
-        "description": "Privește cireșii în floare primăvara."
-    },
-    {
-        "title": "Route 66 (SUA)",
-        "description": "Aventură auto clasică de-a lungul Route 66 în SUA."
-    },
+    {"title": "Santorini (Grecia)", "description": "Cină romantică pe o terasă cu vedere la mare."},
+    {"title": "Japonia (Tokyo/Kyoto)", "description": "Privește cireșii în floare primăvara."},
+    {"title": "Route 66 (SUA)", "description": "Aventură auto clasică de-a lungul Route 66 în SUA."},
 ]
 
 @login_required
@@ -51,11 +42,7 @@ class AddObjectiveFromBucketView(LoginRequiredMixin, View):
         title = request.POST.get('title')
         description = request.POST.get('description')
         if title and description:
-            Objective.objects.create(
-                user=request.user,
-                title=title,
-                description=description,
-            )
+            Objective.objects.create(user=request.user, title=title, description=description)
         return HttpResponseRedirect(reverse('bucket-list'))
 
 class ObjectiveListView(LoginRequiredMixin, ListView):
@@ -136,18 +123,17 @@ def verifica_si_acorda_badgeuri(user):
     badgeuri_obtinute = set(user.badges.values_list('name', flat=True))
 
     if finalizate >= 1 and "Început de călătorie" not in badgeuri_obtinute:
-        badge, created = Badge.objects.get_or_create(
+        badge, _ = Badge.objects.get_or_create(
             name="Început de călătorie",
             defaults={"description": "Ai finalizat primul tău obiectiv!"}
         )
-        badge.users.add(user)
+        user.badges.add(badge)
         print("🏅 Acordat: Început de călătorie")
 
-
     if total > 0 and finalizate == total and "100% completat" not in badgeuri_obtinute:
-        badge, created = Badge.objects.get_or_create(
+        badge, _ = Badge.objects.get_or_create(
             name="100% completat",
             defaults={"description": "Ai finalizat toate obiectivele tale!"}
         )
-        badge.users.add(user)
+        user.badges.add(badge)
         print("🏆 Acordat: 100% completat")
