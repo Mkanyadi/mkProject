@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
 from .models import Objective
 from badge.models import Badge
-
+from django.contrib import messages
 
 BUCKET_OBJECTIVES = [
     {
@@ -28,12 +28,10 @@ BUCKET_OBJECTIVES = [
     },
 ]
 
-
+@login_required
 def home(request):
-    badges = Badge.objects.all()
+    badges = request.user.badges.all()
     return render(request, 'objectives/home.html', {'badges': badges})
-
-
 
 def register(request):
     if request.method == 'POST':
@@ -44,8 +42,6 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'registration/register.html', {'form': form})
-
-
 
 class BucketListView(TemplateView):
     template_name = 'objectives/bucket_list.html'
@@ -62,8 +58,6 @@ class AddObjectiveFromBucketView(LoginRequiredMixin, View):
             )
         return HttpResponseRedirect(reverse('bucket-list'))
 
-
-# CRUD OBIECTIVE
 class ObjectiveListView(LoginRequiredMixin, ListView):
     model = Objective
     template_name = 'objectives/objective_list.html'
@@ -74,6 +68,10 @@ class ObjectiveListView(LoginRequiredMixin, ListView):
             queryset = queryset.filter(completed=True)
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['badges'] = self.request.user.badges.all()
+        return context
 
 class ObjectiveDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Objective
@@ -82,7 +80,6 @@ class ObjectiveDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def test_func(self):
         obj = self.get_object()
         return obj.user == self.request.user
-
 
 class ObjectiveCreateView(LoginRequiredMixin, CreateView):
     model = Objective
@@ -94,7 +91,6 @@ class ObjectiveCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-
 class ObjectiveUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Objective
     fields = ['title', 'description', 'image']
@@ -105,7 +101,6 @@ class ObjectiveUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         obj = self.get_object()
         return obj.user == self.request.user
 
-
 class ObjectiveDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Objective
     template_name = 'objectives/objective_confirm_delete.html'
@@ -115,12 +110,44 @@ class ObjectiveDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         obj = self.get_object()
         return obj.user == self.request.user
 
-
-
 @login_required
 def toggle_completed(request, pk):
     objective = get_object_or_404(Objective, pk=pk, user=request.user)
     if request.method == 'POST':
         objective.completed = not objective.completed
         objective.save()
+
+        badgeuri_initiale = set(request.user.badges.values_list('name', flat=True))
+        verifica_si_acorda_badgeuri(request.user)
+        badgeuri_noi = set(request.user.badges.values_list('name', flat=True)) - badgeuri_initiale
+
+        for badge in badgeuri_noi:
+            messages.success(request, f'🎉 Felicitări! Ai primit un nou badge: {badge}')
+
     return redirect('objective-list')
+
+def verifica_si_acorda_badgeuri(user):
+    print(f"🟢 Verific badge-uri pentru: {user.username}")
+
+    total = Objective.objects.filter(user=user).count()
+    finalizate = Objective.objects.filter(user=user, completed=True).count()
+    print(f"🥇 Obiective finalizate: {finalizate} / {total}")
+
+    badgeuri_obtinute = set(user.badges.values_list('name', flat=True))
+
+    if finalizate >= 1 and "Început de călătorie" not in badgeuri_obtinute:
+        badge, created = Badge.objects.get_or_create(
+            name="Început de călătorie",
+            defaults={"description": "Ai finalizat primul tău obiectiv!"}
+        )
+        badge.users.add(user)
+        print("🏅 Acordat: Început de călătorie")
+
+
+    if total > 0 and finalizate == total and "100% completat" not in badgeuri_obtinute:
+        badge, created = Badge.objects.get_or_create(
+            name="100% completat",
+            defaults={"description": "Ai finalizat toate obiectivele tale!"}
+        )
+        badge.users.add(user)
+        print("🏆 Acordat: 100% completat")
