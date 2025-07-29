@@ -10,18 +10,25 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">🏠 Acasă</a>
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">🏠
+                        Acasă</a>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="categorieDropdown" role="button" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="categorieDropdown" role="button"
+                       data-bs-toggle="dropdown">
                         🧭 Categorii
                     </a>
                     <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item"
+                               href="https://www.dertour.ro/rezultatele-cautarii?ac1=2&d=63542%7C...%7C264&tt=1"
+                               target="_self">
+                                🌍 Ofertă Călătorii
+                            </a>
+                        </li>
                         <li><a class="dropdown-item" href="#">🌴 Călătorii</a></li>
-                        <li><a class="dropdown-item" href="#">⛰️ Aventură</a></li>
                         <li><a class="dropdown-item" href="#">🎨 Hobby-uri</a></li>
-                        <li><a class="dropdown-item" href="#">🏆 Obiective personale</a></li>
                     </ul>
                 </li>
 
@@ -37,9 +44,6 @@
                     <a class="nav-link" href="{% url 'badge-list' %}">🏅 Badge-uri</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'objective-add' %}">➕ Adaugă obiectiv</a>
-                </li>
 
             </ul>
 

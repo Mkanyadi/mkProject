@@ -1,3 +1,4 @@
+from .views import ObjectiveMemoryUpdateView
 from . import views
 from django.urls import path
 from .views import (
@@ -22,5 +23,6 @@ urlpatterns = [
     path('bucket-list/', BucketListView.as_view(), name='bucket-list'),
     path('bucket-list/add/', AddObjectiveFromBucketView.as_view(), name='add-from-bucket'),
     path('toggle-completed/<int:pk>/', toggle_completed, name='toggle-completed'),
+    path('objectives/bucket-list/', BucketListView.as_view(), name='bucket-list'),
+    path('<int:pk>/memory/', ObjectiveMemoryUpdateView.as_view(), name='objective-memory-update'),
 ]
-

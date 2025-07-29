@@ -1,33 +1,55 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h2 class="mb-4 text-center">Lista Badge-uri</h2>
+<div class="container py-4">
+    <h2 class="text-center mb-4">🏅 Lista Badge-uri</h2>
 
+    {% if user.is_authenticated %}
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for badge in object_list %}
+            {% for badge in badges %}
                 <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        {% if badge.image %}
-                            <img src="{{ badge.image.url }}" class="card-img-top" alt="{{ badge.name }}">
-                        {% endif %}
-                        <div class="card-body text-center">
+                    <div class="card shadow-sm h-100 text-center">
+                        <div class="card-body">
                             <h5 class="card-title">{{ badge.name }}</h5>
                             <p class="card-text">{{ badge.description }}</p>
-                            <a href="{% url 'badge-detail' badge.pk %}"
-                               class="btn btn-outline-primary btn-sm">Detalii</a>
-                            <a href="{% url 'badge-edit' badge.pk %}" class="btn btn-warning btn-sm">Editează</a>
+                            <a href="{% url 'badge-detail' badge.pk %}" class="btn btn-outline-primary btn-sm">Detalii</a>
+                            <a href="{% url 'badge-update' badge.pk %}" class="btn btn-warning btn-sm">Editează</a>
                             <a href="{% url 'badge-delete' badge.pk %}" class="btn btn-danger btn-sm">Șterge</a>
                         </div>
                     </div>
                 </div>
-            {% empty %}
-                <p class="text-center">Nu există badge-uri momentan.</p>
             {% endfor %}
         </div>
-
         <div class="text-center mt-4">
-            <a href="{% url 'badge-add' %}" class="btn btn-success">Adaugă un nou badge</a>
+            <a href="{% url 'badge-create' %}" class="btn btn-success">Adaugă un nou badge</a>
         </div>
-    </div>
+
+    {% else %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for badge in default_badges %}
+                <div class="col">
+                    <div class="card shadow-sm h-100 text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {% if "călătorie" in badge.name %}🚀
+                                {% elif "Momentum" in badge.name %}⚡
+                                {% elif "Explorer" in badge.name %}🌍
+                                {% elif "Aventurier" in badge.name %}🧗
+                                {% elif "Sprint" in badge.name %}🏃
+                                {% elif "100%" in badge.name %}✅
+                                {% endif %}
+                                {{ badge.name }}
+                            </h5>
+                            <p class="card-text">{{ badge.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <span class="text-muted">🔒 Autentifică-te pentru a câștiga aceste badge-uri!</span>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
+
